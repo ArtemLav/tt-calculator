@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import ScreenArea from './components/ScreenArea/ScreenArea';
-import ButtonArea from './components/ButtonArea/ButtonArea';
+import ScreenArea from './src/components/ScreenArea';
+import ButtonArea from './src/components/ButtonArea';
 
 export default function App() {
   const [number, setNumber] = useState('0');
@@ -9,7 +9,7 @@ export default function App() {
   const [rememberedNumber, setRememberedNumber] = useState(null);
 
   const handleNumberClick = (newNumber) => {
-    if (+number === 0) {
+    if (number === '0' && !number.includes('.')) {
       setNumber(newNumber);
     } else {
       setNumber(`${number}${newNumber}`);
@@ -23,16 +23,34 @@ export default function App() {
   };
 
   const handleEqualClick = () => {
-    setNumber(eval(`${rememberedNumber} ${operator} ${number}`));
+    switch (operator) {
+      case '+':
+        setNumber(`${+rememberedNumber + +number}`);
+        break;
+
+      case '-':
+        setNumber(`${rememberedNumber - number}`);
+        break;
+
+      case '*':
+        setNumber(`${rememberedNumber * number}`);
+        break;
+
+      case '/':
+        setNumber(`${rememberedNumber / number}`);
+        break;
+
+      default:
+        break;
+    }
+
     setOperator(null);
     setRememberedNumber(null);
   }
 
   const handlePercent = () => {
-    if (+number <= 0) {
-      setNumber('0');
-    } else {
-      setNumber(number / 100 + '');
+    if (number !== '0') {
+      setNumber(`${number / 100}`);
     }
   };
 
@@ -48,12 +66,22 @@ export default function App() {
   };
 
   const handleReverseSign = () => {
-    setNumber(+number * -1 + '');
+    setNumber(`${number * -1}`);
   };
+
+  const removeOneDigit = () => {
+    if (number !== '0') {
+      if (number.length === 1) {
+          setNumber('0')
+      } else {
+        setNumber(number.slice(0, -1));
+      }
+    }
+  }
 
   return (
     <View style={styles.container}>
-      <ScreenArea number={number}/>
+      <ScreenArea number={number} removeOneDigit={removeOneDigit}/>
       <ButtonArea
         handleEqualClick={handleEqualClick}
         handleOperationClick={handleOperationClick}
@@ -70,7 +98,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-end',
     backgroundColor: 'black',
     padding: 10,
     paddingBottom: 15,

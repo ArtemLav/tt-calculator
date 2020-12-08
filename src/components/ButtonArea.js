@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View, Dimensions } from 'react-native';
 
-const { width: WIDTH } = Dimensions.get('window');
+import PropTypes from 'prop-types';
 
 export default function ButtonArea({
                                      handleNumberClick,
@@ -14,22 +14,31 @@ export default function ButtonArea({
 }) {
 
   return (
-    <View style={styles.bottom}>
+    <View style={styles.buttons}>
       <View style={styles.row}>
-        <TouchableHighlight style={styles.buttonGray} onPress={handleClear}>
+        <TouchableHighlight
+          style={[styles.button, styles.buttonGray]}
+          onPress={handleClear}
+        >
           <Text style={styles.text}>AC</Text>
         </TouchableHighlight>
 
-        <TouchableHighlight style={styles.buttonGray} onPress={handleReverseSign}>
+        <TouchableHighlight
+          style={[styles.button, styles.buttonGray]}
+          onPress={handleReverseSign}
+        >
           <Text style={styles.text}>+/-</Text>
         </TouchableHighlight>
 
-        <TouchableHighlight style={styles.buttonGray} onPress={handlePercent}>
+        <TouchableHighlight
+          style={[styles.button, styles.buttonGray]}
+          onPress={handlePercent}
+        >
           <Text style={styles.text}>%</Text>
         </TouchableHighlight>
 
         <TouchableHighlight
-          style={styles.buttonOrange}
+          style={[styles.button, styles.buttonOrange]}
           onPress={() => handleOperationClick('/')}
         >
           <Text style={styles.text}>&#xf7;</Text>
@@ -49,7 +58,7 @@ export default function ButtonArea({
           <Text style={styles.text}>m-</Text>
         </TouchableHighlight>
 
-        <TouchableHighlight style={styles.buttonOrange}>
+        <TouchableHighlight style={[styles.button, styles.buttonOrange]}>
           <Text style={styles.text}>m+</Text>
         </TouchableHighlight>
       </View>
@@ -77,7 +86,7 @@ export default function ButtonArea({
         </TouchableHighlight>
 
         <TouchableHighlight
-          style={styles.buttonOrange}
+          style={[styles.button, styles.buttonOrange]}
           onPress={() => handleOperationClick('*')}
         >
           <Text style={styles.text}>X</Text>
@@ -107,7 +116,7 @@ export default function ButtonArea({
         </TouchableHighlight>
 
         <TouchableHighlight
-          style={styles.buttonOrange}
+          style={[styles.button, styles.buttonOrange]}
           onPress={() => handleOperationClick('-')}
         >
           <Text style={styles.text}>-</Text>
@@ -137,7 +146,7 @@ export default function ButtonArea({
         </TouchableHighlight>
 
         <TouchableHighlight
-          style={styles.buttonOrange}
+          style={[styles.button, styles.buttonOrange]}
           onPress={() => handleOperationClick('+')}
         >
           <Text style={styles.text}>+</Text>
@@ -146,7 +155,7 @@ export default function ButtonArea({
 
       <View style={styles.row}>
         <TouchableHighlight
-          style={styles.buttonZero}
+          style={[styles.button, styles.buttonZero]}
           onPress={() => handleNumberClick('0')}
         >
           <Text style={styles.text}>0</Text>
@@ -157,7 +166,7 @@ export default function ButtonArea({
         </TouchableHighlight>
 
         <TouchableHighlight
-          style={styles.buttonOrange}
+          style={[styles.button, styles.buttonOrange]}
           onPress={handleEqualClick}
         >
           <Text style={styles.text}>=</Text>
@@ -168,9 +177,14 @@ export default function ButtonArea({
 };
 
 const styles = StyleSheet.create({
-  bottom: {
+  buttons: {
     backgroundColor: 'black',
     height: '75%',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 7,
   },
   button: {
     width: 75,
@@ -181,31 +195,14 @@ const styles = StyleSheet.create({
   },
   buttonZero: {
     width: 180,
-    height: 75,
-    borderRadius: 38,
     paddingLeft: 30,
-    backgroundColor: '#333333',
-    justifyContent: 'center',
     alignItems: 'flex-start'
   },
   buttonGray: {
-    width: 75,
-    height: 75,
-    borderRadius: 38,
     backgroundColor: '#a5a5a5',
-    justifyContent: 'center',
   },
   buttonOrange: {
-    width: 75,
-    height: 75,
-    borderRadius: 38,
     backgroundColor: '#ff9a0a',
-    justifyContent: 'center',
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 7,
   },
   text: {
     textAlign: 'center',
@@ -213,3 +210,13 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
+
+ButtonArea.propTypes = {
+  handleNumberClick: PropTypes.func.isRequired,
+  handleClear: PropTypes.func.isRequired,
+  handlePercent: PropTypes.func.isRequired,
+  handleReverseSign: PropTypes.func.isRequired,
+  handleAddingDot: PropTypes.func.isRequired,
+  handleOperationClick: PropTypes.func.isRequired,
+  handleEqualClick: PropTypes.func.isRequired,
+}
